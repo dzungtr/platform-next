@@ -1,0 +1,24 @@
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+name: kind-cluster
+
+# replace cni by cilium
+networking:
+  disableDefaultCNI: true
+
+nodes:
+- role: control-plane
+- role: worker
+  image: kindest/node:v1.29.8
+  # Port mapping to access Loadbalancer service from host
+  extraPortMappings:
+  - containerPort: 31799
+    hostPort: 3280
+  - containerPort: 32426
+    hostPort: 3443
+  labels:
+    hostNetwork: "true"
+- role: worker
+  image: kindest/node:v1.29.8
+- role: worker
+  image: kindest/node:v1.29.8
